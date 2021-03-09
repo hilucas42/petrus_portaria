@@ -8,6 +8,22 @@
     }
 
     # Otherwise, render page
+
+    # [Example data] Change it later to retrieve the data from database
+    $fake_visits = '[
+        {"name": "Garrett Winters", "arrival": "2021/02/25 13:45", "departure": "2021/02/25 13:54", "department": "Secretaria", "tag": "2021001"},
+        {"name": "Ashton Cox", "arrival": "2021/02/25 13:58", "departure": "2021/02/25 14:35", "department": "Secretaria", "tag": "2021002"},
+        {"name": "Cedric Kelly", "arrival": "2021/02/25 14:21", "departure": "2021/02/25 14:52", "department": "Financeiro", "tag": "2021003"},
+        {"name": "Airi Satou", "arrival": "2021/02/25 14:35", "departure": "2021/02/25 14:50", "department": "Secretaria", "tag": "2021004"},
+        {"name": "Brielle Williamson", "arrival": "2021/02/25 14:49", "departure": "", "department": "Diretoria", "tag": "2021005"},
+        {"name": "Herrod Chandler", "arrival": "2021/02/25 15:04", "departure": "", "department": "Secretaria", "tag": "2021002"}
+    ]';
+
+    if (!$_SESSION['visits']) {
+        $_SESSION['visits'] = json_decode($fake_visits, true);
+    }
+
+    $visits = $_SESSION['visits'];
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +37,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>PETRUS - Dashboard</title>
+    <title>PETRUS - Visitante</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -31,6 +47,9 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -55,7 +74,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Visitas</h1>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -111,7 +130,7 @@
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 17%" aria-valuenow="17" aria-valuemin="0"
+                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
                                                             aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
@@ -144,71 +163,52 @@
                         </div>
                     </div>
 
-                    <!-- Content Row -->
-
-                    <div class="row">
-
-                        <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Visitas do dia</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dados da curva:</div>
-                                            <a class="dropdown-item" href="#">Entradas</a>
-                                            <a class="dropdown-item" href="#">Visitantes</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Todos</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
-                                    </div>
-                                </div>
+                    <!-- DataTables Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Visitas registradas</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Entrada</th>
+                                            <th>Saída</th>
+                                            <th>Setor visitado</th>
+                                            <th>Crachá</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Entrada</th>
+                                            <th>Saída</th>
+                                            <th>Setor visitado</th>
+                                            <th>Crachá</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+<!-- Populates table with data from recovered visits -->
+<?php
+    foreach ($visits as $a_visit) {
+        echo '
+                                        <tr>
+                                            <td>' . $a_visit['name']    .   '</td>
+                                            <td>' . $a_visit['arrival'] .   '</td>
+                                            <td>' . $a_visit['departure'].  '</td>
+                                            <td>' . $a_visit['department']. '</td>
+                                            <td>' . $a_visit['tag']     .   '</td>
+                                        </tr>';
+    }
+?>                                        
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-
-                        <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Departamentos</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-
+                    <!-- End of DataTables Example -->
                 </div>
                 <!-- /.container-fluid -->
 
@@ -224,14 +224,14 @@
     <!-- End of Page Wrapper -->
 
     <!-- Modal and scripts, used in all pages -->
-    <?php include('bottom.inc'); ?>
+    <?php include('bottom.inc') ?>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/demo/datatables-demo.js"></script>
 
 </body>
 
