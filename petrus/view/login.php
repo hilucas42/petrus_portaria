@@ -73,7 +73,7 @@
                                                 id="password" name="password" placeholder="Password">
                                         </div>
                                         <!-- Warns about invalid credentials -->
-                                        <?php if ($bad_login) { ?>
+                                        <?php if (isset($bad_login)) { ?>
                                             <div class="alert alert-danger" role="alert">
                                                 Invalid username or password
                                             </div>

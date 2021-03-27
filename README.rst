@@ -11,3 +11,23 @@ Features
 - Cadastro de dados dos visitantes (a implementar)
 - Associação a crachá numerado (a implementar)
 - Comunicação interna (a implementar)
+
+Configuração
+============
+Algumas configurações são necessárias para o roteamento funcionar. Adicione as
+configurações a seguir na diretiva correspondente à pasta petrus do seu arquivo
+de VirtualHost. Opcionalmente você pode pôr esse código em um arquivo .htaccess
+(ewww... por favor, não escolha essa opção!) na pasta petrus. Isso irá habilitar
+o módulo Rewrite:
+::
+
+    <IfModule mod_rewrite.c>
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !^public/.+$
+        RewriteCond %{REQUEST_FILENAME} !^index.php.*$
+        RewriteRule ^(.+)$ public/$1 [QSA,L]
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^public/(.*)$ index.php?p=$1 [QSA,L]
+    </IfModule>
+
