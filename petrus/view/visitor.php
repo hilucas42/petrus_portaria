@@ -1,15 +1,3 @@
-<?php
-    session_start();
-
-    # User not logged in, redirects to login page
-    if (!$_SESSION || !$_SESSION['userid']) {
-        header("Location: login.php");
-        exit;
-    }
-
-    # Otherwise, render page
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,7 +92,7 @@
                         </div>
                         <!-- Card Body -->
                         <div class="card-body">
-                            <form id="visitor" class="user" action="visitors.php" method="POST">
+                            <form id="visitor" class="user" action="visitors" method="POST">
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-user" id="visitorName"
                                     name="visitorName" placeholder="Nome completo">

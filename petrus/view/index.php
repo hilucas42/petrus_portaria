@@ -1,15 +1,3 @@
-<?php
-    session_start();
-
-    # User not logged in, redirects to login page
-    if (!$_SESSION || !$_SESSION['userid']) {
-        header("Location: login.php");
-        exit;
-    }
-
-    # Otherwise, render page
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 

@@ -1,11 +1,25 @@
 <?php
-    echo $_SERVER['QUERY_STRING'];
+    // Registers the class autoloader
+    spl_autoload_register(function ($class) {
+        $classfile = str_replace('\\','/',$class) . '.php';
+        if (is_readable($classfile)) {
+            include($classfile);
+        }
+    });
 
-    parse_str($_SERVER['QUERY_STRING']);
+    // Extracts the route from the query params
+    parse_str($_SERVER['QUERY_STRING'], $requestparam);
 
-    echo "<br>";
-    echo $p;
-    echo "<br>";
-    echo $ele;
-    echo "<br>";
-    echo $ela;
+    if (isset($requestparam['p'])) {
+        $requestpath = $requestparam['p'];
+        unset($requestparam['p']);
+    } else {
+        $requestpath = '';
+    }
+    
+    // Registers active routes
+    $router = new controller\Router('constroi');
+
+    // Delegates to the router
+    $router->dispatch($requestpath);
+?>

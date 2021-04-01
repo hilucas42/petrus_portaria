@@ -1,24 +1,3 @@
-<?php
-    session_start();
-
-    # We received some credentials, let's chech it
-    if ($_POST && $_POST['username'] && $_POST['password']) {
-        if ($_POST['password'] == $_POST['username'].'123') {
-            $_SESSION['userid'] = hash('md5', $_POST['username']);
-        } else {
-            $bad_login = TRUE;
-        }
-    }
-
-    # User logged in, redirects to main page
-    if ($_SESSION && $_SESSION['userid']) {
-        header("Location: .");
-        exit;
-    }
-
-    # Otherwise, render login page
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,7 +52,7 @@
                                                 id="password" name="password" placeholder="Password">
                                         </div>
                                         <!-- Warns about invalid credentials -->
-                                        <?php if (isset($bad_login)) { ?>
+                                        <?php if (isset($badlogin)) { ?>
                                             <div class="alert alert-danger" role="alert">
                                                 Invalid username or password
                                             </div>

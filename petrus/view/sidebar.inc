@@ -32,14 +32,14 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item <?= $page == "visits" ? "active" : "" ?>">
-                <a class="nav-link" href="visits.php">
+                <a class="nav-link" href="visits">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Visitas</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item <?= $page == "visitors" ? "active" : "" ?>">
-                <a class="nav-link" href="visitors.php">
+                <a class="nav-link" href="visitors">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Visitantes</span></a>
             </li>

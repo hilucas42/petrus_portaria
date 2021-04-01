@@ -3,7 +3,7 @@
 
     # User not logged in, redirects to login page
     if (!$_SESSION || !$_SESSION['userid']) {
-        header("Location: login.php");
+        header("Location: login");
         exit;
     }
 
@@ -87,7 +87,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Visitantes</h1>
-                        <a href="visitor.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        <a href="visitor" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-plus-circle fa-sm text-white-50"></i> Novo visitante</a>
                     </div>
 

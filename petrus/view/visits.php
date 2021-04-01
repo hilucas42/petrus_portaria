@@ -3,7 +3,7 @@
 
     # User not logged in, redirects to login page
     if (!$_SESSION || !$_SESSION['userid']) {
-        header("Location: login.php");
+        header("Location: login");
         exit;
     }
 
