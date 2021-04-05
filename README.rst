@@ -14,6 +14,10 @@ Features
 
 Configuração
 ============
+Para configurar o banco de dados edite o arquivo `./petrus/model/Connection.php`
+com as configurações de seu schema. O arquivo `./petrus/example.sql` contém uma
+carga de exemplo do PostgreSQL, ou editado para ser compatível com outro RDBMS.
+
 Algumas configurações são necessárias para o roteamento funcionar. Adicione as
 configurações a seguir na diretiva correspondente à pasta petrus do seu arquivo
 de VirtualHost. Opcionalmente você pode pôr esse código em um arquivo .htaccess
