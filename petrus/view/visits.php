@@ -1,31 +1,3 @@
-<?php
-    session_start();
-
-    # User not logged in, redirects to login page
-    if (!$_SESSION || !$_SESSION['userid']) {
-        header("Location: login");
-        exit;
-    }
-
-    # Otherwise, render page
-
-    # [Example data] Change it later to retrieve the data from database
-    $fake_visits = '[
-        {"name": "Garrett Winters", "arrival": "2021/02/25 13:45", "departure": "2021/02/25 13:54", "department": "Secretaria", "tag": "2021001"},
-        {"name": "Ashton Cox", "arrival": "2021/02/25 13:58", "departure": "2021/02/25 14:35", "department": "Secretaria", "tag": "2021002"},
-        {"name": "Cedric Kelly", "arrival": "2021/02/25 14:21", "departure": "2021/02/25 14:52", "department": "Financeiro", "tag": "2021003"},
-        {"name": "Airi Satou", "arrival": "2021/02/25 14:35", "departure": "2021/02/25 14:50", "department": "Secretaria", "tag": "2021004"},
-        {"name": "Brielle Williamson", "arrival": "2021/02/25 14:49", "departure": "", "department": "Diretoria", "tag": "2021005"},
-        {"name": "Herrod Chandler", "arrival": "2021/02/25 15:04", "departure": "", "department": "Secretaria", "tag": "2021002"}
-    ]';
-
-    if (!$_SESSION['visits']) {
-        $_SESSION['visits'] = json_decode($fake_visits, true);
-    }
-
-    $visits = $_SESSION['visits'];
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -195,7 +167,7 @@
     foreach ($visits as $a_visit) {
         echo '
                                         <tr>
-                                            <td>' . $a_visit['name']    .   '</td>
+                                            <td>' . $a_visit['visitorname']    .   '</td>
                                             <td>' . $a_visit['arrival'] .   '</td>
                                             <td>' . $a_visit['departure'].  '</td>
                                             <td>' . $a_visit['department']. '</td>

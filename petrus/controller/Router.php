@@ -30,9 +30,30 @@ class Router {
         }
 
         // Delegates routes to the corresponding controller
+
+        if (is_null($route) || $route == '' or $route == 'index') {
+            \view\View::render();
+            return;
+        }
         
-        
-        \view\View::render();
+        try {
+            $ctl = '\\controller\\' . ucfirst($route);
+            switch ($_SERVER['REQUEST_METHOD']) {
+                case 'GET':
+                    $ctl::get();
+                    break;
+                case 'POST':
+                    $ctl::post();
+                case 'PUT':
+                    $ctl::post();
+                case 'DELETE':
+                    $ctl::post();
+                default:
+                    throw new \Exception('Unknown method');
+            }
+        } catch (\Exception $e) {
+            \view\View::render();
+        }
     }
 }
 

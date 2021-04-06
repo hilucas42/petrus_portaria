@@ -16,7 +16,7 @@
     } else {
         $requestpath = '';
     }
-    
+
     // Registers active routes
     $router = new controller\Router('constroi');
 

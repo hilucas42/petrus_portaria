@@ -16,7 +16,7 @@ class Visit {
     public function __construct($id=0, $visitorid=0, $visitorname=null, $arrival=null, $departure=null, $department=null, $tag=null) {
         $this->id = $id;
         $this->visitorid = $visitorid;
-        $this->fullname = $fullname;
+        $this->visitorname = $visitorname;
         $this->arrival = $arrival;
         $this->departure = $departure;
         $this->department = $department;

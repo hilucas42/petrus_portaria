@@ -1,42 +1,3 @@
-<?php
-    session_start();
-
-    # User not logged in, redirects to login page
-    if (!$_SESSION || !$_SESSION['userid']) {
-        header("Location: login");
-        exit;
-    }
-
-    # Otherwise, render page
-
-    # [Example data] Change it later to retrieve the data from database
-    $fake_visitors = '[
-        {"name": "Garrett Winters", "cpf": "02994078023", "rg": "216392858", "email": "g.winters@yahoo.com", "phone": "996734776", "wpp": "996734776"},
-        {"name": "Ashton Cox", "cpf": "96253105094", "rg": "316382723", "email": "", "phone": "996300191", "wpp": "996300191"},
-        {"name": "Cedric Kelly", "cpf": "56039455080", "rg": "369076862", "email": "kelly.cedric@gmail.com", "phone": "34361706", "wpp": "988264619"},
-        {"name": "Airi Satou", "cpf": "15165140091", "rg": "", "email": "aspsyco@gmail.com", "phone": "35210100", "wpp": ""},
-        {"name": "Brielle Williamson", "cpf": "74259032020", "rg": "", "email": "", "phone": "54999953123", "wpp": "54999953123"},
-        {"name": "Herrod Chandler", "cpf": "84968453035", "rg": "433285679", "email": "", "phone": "988131946", "wpp": "988131946"}
-    ]';
-
-    if (!$_SESSION['visitors']) {
-        $_SESSION['visitors'] = json_decode($fake_visitors, true);
-    }
-
-    if (isset($_POST['save'])) {
-        $_SESSION['visitors'][] = [
-            'name' => $_POST['visitorName'],
-            'cpf' => $_POST['visitorCPF'],
-            'rg' => $_POST['visitorRG'],
-            'email' => $_POST['visitorEmail'],
-            'phone' => $_POST['visitorPhone'],
-            'wpp' => $_POST['visitorWhatsapp'],
-        ];
-    }
-
-    $visitors = $_SESSION['visitors'];
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -125,7 +86,7 @@
     foreach ($visitors as $a_visit) {
         echo '
                                         <tr>
-                                            <td>' . $a_visit['name'] . '</td>
+                                            <td>' . $a_visit['fullname'] . '</td>
                                             <td>' . $a_visit['cpf']  . '</td>
                                             <td>' . $a_visit['rg']   . '</td>
                                             <td>' . $a_visit['email']. '</td>

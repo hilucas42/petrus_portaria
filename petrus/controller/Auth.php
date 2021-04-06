@@ -13,7 +13,7 @@ class Auth {
         if (!isset($_SESSION) || !isset($_SESSION['userdata'])) {
             return 'GUEST';
         }
-        return $_SESSION['user']->isadm ? 'ADMIN' : 'USER';
+        return $_SESSION['userdata']['isadm'] ? 'ADMIN' : 'USER';
     }
 
     private static function login() {
