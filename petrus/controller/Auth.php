@@ -9,27 +9,33 @@ namespace controller;
 class Auth {
     public static function getUserRole() {
         session_start();
-
-        if (!isset($_SESSION) || !isset($_SESSION['userid'])) {
+        // We must check if user is logged in, and if it has admin privileges
+        if (!isset($_SESSION) || !isset($_SESSION['userdata'])) {
             return 'GUEST';
         }
-        return 'ADMIN';
-        //return $usercontroller.getUser($_SESSION['userid']).getRole();
+        return $_SESSION['user']->isadm ? 'ADMIN' : 'USER';
     }
 
     private static function login() {
         // We received some credentials, let's chech it
         if ($_POST['username'] && $_POST['password']) {
-            if ($_POST['password'] == $_POST['username'].'123') {
-                $_SESSION['userid'] = hash('md5', $_POST['username']);
+            $u = new \model\User($_POST['username'], $_POST['password']);
+            if ($u->validateLogin()) {
+                $_SESSION['userdata'] = [
+                    'username' => $u->username,
+                    'fullname' => $u->fullname,
+                    'isadm' => $u->isadm,
+                    'email' => $u->email,
+                    'phone' => $u->phone
+                ];
             } else {
-                \view\View::render('login', [badlogin => true]);
+                \view\View::render('login', ['badlogin' => true]);
                 return;
             }
         }
 
         # User logged in, redirects to main page
-        if ($_SESSION && $_SESSION['userid']) {
+        if (isset($_SESSION) && isset($_SESSION['userdata'])) {
             header("Location: .");
             return;
         }

@@ -1,5 +1,19 @@
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS visits;
 DROP TABLE IF EXISTS visitors;
+
+CREATE TABLE users (
+  username varchar(16) NOT NULL,
+  passhash varchar(32) NOT NULL,
+  fullname varchar(100),
+  email varchar(100),
+  phone varchar(20),
+  isadm boolean,
+  CONSTRAINT users_pkey PRIMARY KEY (username)
+);
+
+insert into users (username,passhash,fullname, isadm)
+  values ('admin', MD5('petrus'), 'BuiltIn Administrator', true);
 
 CREATE TABLE visitors (
   id serial NOT NULL,

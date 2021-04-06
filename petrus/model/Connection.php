@@ -22,7 +22,7 @@ class Connection {
                     \PDO::ATTR_ERRMODE,
                     \PDO::ERRMODE_EXCEPTION
                 );
-            } catch (\PDOExeption $e) {
+            } catch (\PDOException $e) {
                 error_log($e->getMessage());
                 return null;
             }

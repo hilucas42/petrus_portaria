@@ -31,14 +31,8 @@ class Router {
 
         // Delegates routes to the corresponding controller
         
-        echo '<h1>Visitors</h1>';
-        echo '<pre>';
-        print_r(\model\Visitor::readAll());
-        echo '</pre>';
-        echo '<h1>Visits</h1>';
-        echo '<pre>';
-        print_r(\model\Visit::readAll());
-        echo '</pre>';
+        
+        \view\View::render();
     }
 }
 
