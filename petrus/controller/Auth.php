@@ -36,7 +36,7 @@ class Auth {
 
         # User logged in, redirects to main page
         if (isset($_SESSION) && isset($_SESSION['userdata'])) {
-            header("Location: .");
+            header('Location: /');
             return;
         }
 
@@ -54,7 +54,7 @@ class Auth {
             );
         }
         session_destroy();
-        header("Location: login");
+        header('Location: /login');
     }
 
     public static function handle($route) {

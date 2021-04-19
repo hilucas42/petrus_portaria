@@ -24,8 +24,7 @@ class Router {
 
         // Redirects unauthenticated users to login page
         if ($role === 'GUEST') {
-            error_log('Router: redireciona para login');
-            header("Location: login");
+            header('Location: /login');
             return;
         }
 

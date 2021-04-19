@@ -1,11 +1,8 @@
-<!-- Uses the name of the called script to activate the link to the page -->
-<?php $page = basename($_SERVER["SCRIPT_FILENAME"], '.php'); ?>
-
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                 <div class="sidebar-brand-icon">
                     <i class="fas fa-door-open"></i>
                 </div>
@@ -16,8 +13,8 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item <?= $page == "index" ? "active" : "" ?>">
-                <a class="nav-link" href=".">
+            <li class="nav-item <?= $view == "index" ? "active" : "" ?>">
+                <a class="nav-link" href="/">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -31,19 +28,19 @@
             </div>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item <?= $page == "visits" ? "active" : "" ?>">
-                <a class="nav-link" href="visits">
+            <li class="nav-item <?= $view == "visits" ? "active" : "" ?>">
+                <a class="nav-link" href="/visits">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Visitas</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item <?= $page == "visitors" ? "active" : "" ?>">
-                <a class="nav-link" href="visitors">
+            <li class="nav-item <?= $view == "visitors" ? "active" : "" ?>">
+                <a class="nav-link" href="/visitors">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Visitantes</span></a>
             </li>
-
+<?php if (isset($_SESSION['userdata']['isadm']) && $_SESSION['userdata']['isadm']) {?>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -53,19 +50,19 @@
             </div>
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+            <li class="nav-item <?= $view == "users" ? "active" : "" ?>">
+                <a class="nav-link" href="/users">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Usuários</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="/reports">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Relatórios</span></a>
             </li>
-
+<?php }?>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
