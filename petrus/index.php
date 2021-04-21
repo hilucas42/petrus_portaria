@@ -18,8 +18,8 @@
     }
 
     // Registers active routes
-    $router = new controller\Router('constroi');
+    $router = new controller\Router($requestpath, $requestparam);
 
     // Delegates to the router
-    $router->dispatch($requestpath);
+    $router->dispatch();
 ?>

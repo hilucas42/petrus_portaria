@@ -3,56 +3,62 @@ namespace controller;
 
 class Router {
 
-    protected $viewpath = 'dashboard.php';
+    private $query;
+    private $route;
+    private $arg;
 
-    public function __construct($view = 'index') {
-        $this->viewpath = $view;
+    public function __construct($path, $query) {
+        $this->query = $query;
+        list($route, $arg) = explode('/', $path);
+        $this->route = isset($route) ? $route : '/';
+        $this->arg = isset($arg) ? $arg : '';
     }
 
-    public function dispatch($route) {
-        error_log("Router: vai agora manipular a rota \"$route\"");
-
+    public function dispatch() {
         // Delegates authentication routes to the controller in charge
-        if ($route === 'login' or $route === 'logout') {
-            error_log('Router: delega para Auth');
-            Auth::handle($route);
+        if ($this->route === 'login' or $this->route === 'logout') {
+            Auth::handle($this->route);
             return;
         }
 
-        // Identifies the user role
-        $role = Auth::getUserRole();
-
         // Redirects unauthenticated users to login page
-        if ($role === 'GUEST') {
+        if (!Auth::userLoggedIn()) {
             header('Location: /login');
             return;
         }
 
         // Delegates routes to the corresponding controller
 
-        if (is_null($route) || $route == '' or $route == 'index') {
+        if ($this->route == '' or $this->route == 'index') {
             \view\View::render();
             return;
         }
         
         try {
-            $ctl = '\\controller\\' . ucfirst($route);
-            switch ($_SERVER['REQUEST_METHOD']) {
+            $ctl = '\\controller\\' . ucfirst($this->route);
+            $method = $_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['_method'] : $_SERVER['REQUEST_METHOD'];
+            switch ($method) {
                 case 'GET':
-                    $ctl::get();
+                    $ctl::get($this->arg);
                     break;
                 case 'POST':
                     $ctl::post();
+                    break;
                 case 'PUT':
-                    $ctl::post();
+                    $ctl::put($this->arg);
+                    break;
+                case 'PATCH':
+                    $ctl::patch($this->arg);
+                    break;
                 case 'DELETE':
-                    $ctl::post();
+                    $ctl::delete($this->arg);
+                    break;
                 default:
                     throw new \Exception('Unknown method');
             }
         } catch (\Exception $e) {
-            \view\View::render();
+            error_log($e->getMessage());
+            header('Location: /');
         }
     }
 }
-

@@ -16,6 +16,10 @@ class Auth {
         return $_SESSION['userdata']['isadm'] ? 'ADMIN' : 'USER';
     }
 
+    public static function userLoggedIn() {
+        return Auth::getUserRole() != 'GUEST';
+    }
+
     private static function login() {
         // We received some credentials, let's chech it
         if ($_POST['username'] && $_POST['password']) {
