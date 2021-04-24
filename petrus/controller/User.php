@@ -8,6 +8,7 @@ class User {
         if (Auth::getUserRole() != 'ADMIN') {
             return;
         }
+        \model\Picture::flush();
         $v = new \model\User();
         $v->readOne($username);
         if ($username == '') {

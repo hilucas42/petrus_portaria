@@ -54,7 +54,7 @@ class Router {
                     $ctl::delete($this->arg);
                     break;
                 default:
-                    throw new \Exception('Unknown method');
+                    $ctl::post();
             }
         } catch (\Exception $e) {
             error_log($e->getMessage());

@@ -79,6 +79,9 @@ class User {
         } catch (Exception $e) {
             throw $e;
         }
+        if (Picture::gettemp()) {
+            Picture::persist(Picture::gettemp(), $this->username);
+        }
         $stmt = $this->conn->prepare(
             'INSERT INTO users (username, fullname, email, phone, isadm, passhash)
              VALUES (:username, :fullname, :email, :phone, :isadm, :passhash)'
@@ -99,6 +102,9 @@ class User {
             $this->validateFields($this->password == '');
         } catch (Exception $e) {
             throw $e;
+        }
+        if (Picture::gettemp()) {
+            Picture::persist(Picture::gettemp(), $this->username);
         }
         if (is_null($this->password) || $this->password == '') {
             $stmt = $this->conn->prepare(

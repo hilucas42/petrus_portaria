@@ -1,0 +1,4 @@
+# Ignore data files which may be here
+*
+# But keep this file, so the directory don't need to be created later
+!.gitignore
