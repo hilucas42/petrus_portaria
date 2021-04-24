@@ -7,6 +7,10 @@ namespace controller;
  * Author: Lucas
  */
 class Auth {
+    public static function getUsername() {
+        return $_SESSION['userdata']['username'];
+    }
+
     public static function getUserRole() {
         session_start();
         // We must check if user is logged in, and if it has admin privileges

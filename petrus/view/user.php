@@ -28,7 +28,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Novo usuário</h1>
+                        <h1 class="h3 mb-0 text-gray-800"><?=isset($put) ? $user->username : 'Novo usuário'?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
                             onclick="validateUserForm()">
                             <i class="fas fa-plus-circle fa-sm text-white-50"></i> Salvar usuário
@@ -116,10 +116,12 @@
                                                 name="email" placeholder="Email" <?=isset($user) ? 'value="' . $user->email . '"' : null?>>
                                             </div>
                                         </div>
+<?php if (\controller\Auth::getUserRole() == 'ADMIN') { ?>
                                         <div class="form-group custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input" id="userIsAdm" name="isadm" <?=isset($user) && $user->isadm ? 'checked' : null?>>
                                             <label class="custom-control-label" for="userIsAdm">Administrador</label>
                                         </div>
+<?php } ?>
                                         <div class="form-group d-none">
                                             <button type="submit" class="btn btn-primary btn-user btn-block" id='save'
                                             name="save" value="Save"></button>
@@ -128,6 +130,15 @@
                                 </div>
                             </div>
                         </div>
+<?php if (isset($message) && $message == 'success') { ?>
+                        <div class="alert alert-success mx-4 text-center" role="alert">
+                            Alterações salvas com sucesso
+                        </div>
+<?php } elseif (isset($message) && $message == 'warning') { ?>
+                        <div class="alert alert-warning mx-4 text-center" role="alert">
+                            Algumas informações não puderam ser submetidas
+                        </div>
+<?php } ?>
                     </div>
 
                 </div>

@@ -12,6 +12,8 @@ class View {
 
         extract($args, EXTR_OVERWRITE);
 
+        $currentuser = $_SESSION['userdata'];
+
         require $viewpath;
     }
 }

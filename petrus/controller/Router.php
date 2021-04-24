@@ -39,7 +39,7 @@ class Router {
             $method = $_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['_method'] : $_SERVER['REQUEST_METHOD'];
             switch ($method) {
                 case 'GET':
-                    $ctl::get($this->arg);
+                    $ctl::get($this->arg, $this->query);
                     break;
                 case 'POST':
                     $ctl::post();

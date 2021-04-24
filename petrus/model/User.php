@@ -1,6 +1,7 @@
 <?php
 namespace model;
 
+use controller\Auth;
 use Exception;
 
 class User {
@@ -97,6 +98,13 @@ class User {
         return null;
     }
 
+    /**
+     * Updates user data. Only changes 'isadm' if request comes from an admin.
+     * Gets all the data from the view (controller already passed it to us via
+     * constructor), except the username (unchangeable) and the password, if not
+     * changed.
+     * @return null if unable to apply the changes
+     */
     public function update() {
         try {
             $this->validateFields($this->password == '');
@@ -106,24 +114,28 @@ class User {
         if (Picture::gettemp()) {
             Picture::persist(Picture::gettemp(), $this->username);
         }
-        if (is_null($this->password) || $this->password == '') {
-            $stmt = $this->conn->prepare(
-                'UPDATE users SET (fullname, email, phone, isadm) =
-                (:fullname, :email, :phone, :isadm) WHERE username = :username' 
-            );
-            foreach(['username', 'fullname', 'email', 'phone'] as $param) {
-                $stmt->bindParam($param, $this->$param, \PDO::PARAM_STR);
-            }
+        $changepasswd = (isset($this->password) && $this->password != '');
+        $changeisadm  = Auth::getUserRole() == 'ADMIN';
+        $stmt = $this->conn->prepare('UPDATE users SET (
+            fullname,
+            email,
+            phone' .
+            ($changeisadm  ? ',isadm' : '') .
+            ($changepasswd ? ',passhash' : '') . '
+        ) = (
+            :fullname,
+            :email,
+            :phone' .
+            ($changeisadm  ? ',:isadm' : '') .
+            ($changepasswd ? ',:passhash' : '') . '
+        ) WHERE username = :username');
+        foreach(['username', 'fullname', 'email', 'phone'] as $param) {
+            $stmt->bindParam($param, $this->$param, \PDO::PARAM_STR);
+        }
+        if ($changeisadm) {
             $stmt->bindParam('isadm', $this->isadm, \PDO::PARAM_BOOL);
-        } else {
-            $stmt = $this->conn->prepare(
-                'UPDATE users SET (fullname, email, phone, isadm, passhash) =
-                (:fullname, :email, :phone, :isadm, :passhash) WHERE username = :username' 
-            );
-            foreach(['username', 'fullname', 'email', 'phone'] as $param) {
-                $stmt->bindParam($param, $this->$param, \PDO::PARAM_STR);
-            }
-            $stmt->bindParam('isadm', $this->isadm, \PDO::PARAM_BOOL);
+        }
+        if ($changepasswd) {
             $passhash = hash('MD5', $this->password);
             $stmt->bindParam('passhash', $passhash, \PDO::PARAM_STR);
         }

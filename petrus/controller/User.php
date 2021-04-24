@@ -4,8 +4,8 @@ namespace controller;
 use Exception;
 
 class User {
-    public static function get($username) {
-        if (Auth::getUserRole() != 'ADMIN') {
+    public static function get($username, $query) {
+        if (Auth::getUserRole() != 'ADMIN' && $username != Auth::getUsername()) {
             return;
         }
         \model\Picture::flush();
@@ -14,7 +14,11 @@ class User {
         if ($username == '') {
             \view\View::render($view = 'user');
         } else {
-            \view\View::render($view = 'user', $args = ['user' => $v, 'put' => true]);
+            \view\View::render($view = 'user', $args = [
+                'user' => $v,
+                'put' => true,
+                'message' => isset($query['message']) ? $query['message'] : ''
+            ]);
         }
     }
 
@@ -43,7 +47,7 @@ class User {
     }
 
     public static function put($username) {
-        if (Auth::getUserRole() != 'ADMIN') {
+        if (Auth::getUserRole() != 'ADMIN' && $_POST['username'] != Auth::getUsername()) {
             return;
         }
         try {
@@ -56,13 +60,18 @@ class User {
                 $isadm      = isset($_POST['isadm']) ? true : false
             );
             $v->update();
-            header('Location: /users');
+            if (Auth::getUserRole() == 'ADMIN') {
+                header('Location: /users');
+            } else {
+                header('Location: /user/' . $v->username . '?message=success');
+            }
         } catch (Exception $e) {
             list($err) = explode(':', $e->getMessage());
             \view\View::render($view = 'user', $args = [
                 'user' => $v,
-                 $err => true,
-                 'put' => true
+                $err => true,
+                'put' => true,
+                'message' => 'warning'
             ]);
         }
     }
